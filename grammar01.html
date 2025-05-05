@@ -1,0 +1,762 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบทดสอบวิชาภาษาอังกฤษ มัธยมศึกษาปีที่ 4</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #fff9f2;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(255, 153, 51, 0.2);
+        }
+        .progress-bar {
+            height: 8px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #ff9933;
+            transition: width 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #ff9933;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #ff8000;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background-color: #ffd6b0;
+            color: #ff8000;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #ffcb9a;
+            transform: translateY(-2px);
+        }
+        .question-nav-item {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .question-nav-item.active {
+            background-color: #ff9933;
+            color: white;
+        }
+        .question-nav-item.answered {
+            background-color: #ffd6b0;
+            color: #ff8000;
+        }
+        .option-label {
+            transition: all 0.2s ease;
+            border: 2px solid #f0f0f0;
+        }
+        .option-label:hover {
+            border-color: #ffd6b0;
+        }
+        .option-label.selected {
+            border-color: #ff9933;
+            background-color: #fff9f2;
+        }
+        .option-label.correct {
+            border-color: #4CAF50;
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+        .option-label.incorrect {
+            border-color: #F44336;
+            background-color: rgba(244, 67, 54, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-orange-500 to-amber-500 text-white py-4 px-6 shadow-md">
+            <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+                <h1 class="text-xl md:text-2xl font-bold text-center md:text-left">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    วิชาภาษาอังกฤษ มัธยมศึกษาปีที่ 4 เรื่อง Grammar
+                </h1>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow py-6 px-4">
+            <div id="login-screen" class="quiz-container p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-center text-orange-600 mb-6">ลงทะเบียนเข้าสู่แบบทดสอบ</h2>
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label for="student-name" class="block text-gray-700 font-medium mb-2">ชื่อ-นามสกุล</label>
+                        <input type="text" id="student-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" required>
+                    </div>
+                    <div class="pt-4">
+                        <button type="submit" class="w-full btn-primary py-3 rounded-lg font-medium flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
+                            </svg>
+                            เริ่มทำแบบทดสอบ
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="quiz-screen" class="hidden">
+                <div class="quiz-container p-6 md:p-8">
+                    <!-- Quiz Header -->
+                    <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                        <div class="mb-4 md:mb-0">
+                            <h2 class="text-xl font-bold text-gray-800">แบบทดสอบ Grammar</h2>
+                            <p class="text-gray-600" id="student-info"></p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="text-center">
+                                <p class="text-sm text-gray-600">เวลาที่เหลือ</p>
+                                <p class="font-bold text-orange-600" id="timer">05:00</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-sm text-gray-600">ข้อที่</p>
+                                <p class="font-bold text-orange-600"><span id="current-question">1</span>/<span id="total-questions">20</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-bar mb-6">
+                        <div class="progress-fill" id="time-progress" style="width: 100%"></div>
+                    </div>
+
+                    <!-- Question Navigation -->
+                    <div class="mb-6 overflow-x-auto">
+                        <div class="flex space-x-2 py-2" id="question-nav">
+                            <!-- Question navigation buttons will be generated here -->
+                        </div>
+                    </div>
+
+                    <!-- Question Content -->
+                    <div id="question-container" class="mb-6">
+                        <!-- Questions will be loaded here -->
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="flex justify-between">
+                        <button id="prev-btn" class="btn-secondary px-6 py-2 rounded-lg font-medium flex items-center" disabled>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                            </svg>
+                            ข้อก่อนหน้า
+                        </button>
+                        <button id="next-btn" class="btn-primary px-6 py-2 rounded-lg font-medium flex items-center" disabled>
+                            ข้อถัดไป
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="results-screen" class="hidden">
+                <div class="quiz-container p-6 md:p-8">
+                    <h2 class="text-2xl font-bold text-center text-orange-600 mb-6">ผลการทดสอบ</h2>
+                    
+                    <div class="bg-orange-50 rounded-lg p-6 mb-8">
+                        <div class="text-center mb-4">
+                            <p class="text-gray-700 mb-2">คะแนนของคุณ</p>
+                            <h3 class="text-4xl font-bold text-orange-600"><span id="score">0</span>/<span id="total-score">20</span></h3>
+                            <p class="text-xl font-medium text-orange-500 mt-2"><span id="percentage">0</span>%</p>
+                        </div>
+                        
+                        <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
+                            <div id="score-bar" class="bg-orange-500 h-4 rounded-full" style="width: 0%"></div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 text-center">
+                            <div>
+                                <p class="text-gray-600">ตอบถูก</p>
+                                <p class="text-xl font-bold text-green-600" id="correct-answers">0</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">ตอบผิด</p>
+                                <p class="text-xl font-bold text-red-600" id="wrong-answers">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">เฉลยคำตอบ</h3>
+                    <div id="answers-container" class="space-y-6">
+                        <!-- Answers will be loaded here -->
+                    </div>
+                    
+                    <div class="mt-8 text-center">
+                        <button id="restart-btn" class="btn-primary px-8 py-3 rounded-lg font-medium inline-flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                            </svg>
+                            เริ่มทำแบบทดสอบใหม่
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-orange-100 py-4 px-6">
+            <div class="container mx-auto flex flex-col md:flex-row justify-between items-center text-orange-800">
+                <div class="flex items-center mb-3 md:mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                    </svg>
+                    <p>พัฒนาโดย ฟ้าใส เด็กเรียน</p>
+                </div>
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                    </svg>
+                    <p>แบบทดสอบวิชาภาษาอังกฤษ</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Quiz data
+        const quizData = [
+            {
+                question: "Which sentence is grammatically correct?",
+                options: [
+                    "She don't like coffee.",
+                    "She doesn't likes coffee.",
+                    "She doesn't like coffee.",
+                    "She not like coffee."
+                ],
+                answer: 2,
+                explanation: "The correct form is 'She doesn't like coffee.' We use 'doesn't' (does not) with third-person singular subjects (he, she, it) and the base form of the verb without 's'."
+            },
+            {
+                question: "Choose the correct sentence:",
+                options: [
+                    "I have been to Japan last year.",
+                    "I went to Japan last year.",
+                    "I have gone to Japan last year.",
+                    "I had been going to Japan last year."
+                ],
+                answer: 1,
+                explanation: "For a specific time in the past, we use the simple past tense. 'I went to Japan last year' is correct because 'last year' indicates a specific completed time."
+            },
+            {
+                question: "Which sentence uses the present perfect tense correctly?",
+                options: [
+                    "I have seen that movie yesterday.",
+                    "I have seen that movie three times.",
+                    "I have see that movie already.",
+                    "I have saw that movie before."
+                ],
+                answer: 1,
+                explanation: "The present perfect tense is formed with 'have/has' + past participle. 'I have seen that movie three times' is correct and shows an action that happened at an unspecified time before now."
+            },
+            {
+                question: "Select the sentence with the correct conditional form:",
+                options: [
+                    "If I will study, I will pass the exam.",
+                    "If I study, I will pass the exam.",
+                    "If I would study, I will pass the exam.",
+                    "If I study, I would pass the exam."
+                ],
+                answer: 1,
+                explanation: "In first conditional sentences (for possible future situations), we use 'if + present simple, will + infinitive'. So 'If I study, I will pass the exam' is correct."
+            },
+            {
+                question: "Which sentence uses articles correctly?",
+                options: [
+                    "She is best student in the class.",
+                    "She is a best student in the class.",
+                    "She is the best student in class.",
+                    "She is the best student in the class."
+                ],
+                answer: 3,
+                explanation: "When referring to a superlative (best) and a specific class, we use 'the' before the superlative and 'the' before the specific noun. 'She is the best student in the class' is correct."
+            },
+            {
+                question: "Choose the sentence with the correct passive voice:",
+                options: [
+                    "The book was wrote by Mark Twain.",
+                    "The book written by Mark Twain.",
+                    "The book was written by Mark Twain.",
+                    "The book is writing by Mark Twain."
+                ],
+                answer: 2,
+                explanation: "The passive voice is formed with 'be + past participle'. 'The book was written by Mark Twain' correctly uses 'was' (past tense of be) + 'written' (past participle of write)."
+            },
+            {
+                question: "Which sentence uses the past continuous tense correctly?",
+                options: [
+                    "I was cook dinner when the phone rang.",
+                    "I cooking dinner when the phone rang.",
+                    "I was cooking dinner when the phone rang.",
+                    "I were cooking dinner when the phone rang."
+                ],
+                answer: 2,
+                explanation: "The past continuous tense is formed with 'was/were + present participle (-ing form)'. 'I was cooking dinner when the phone rang' is correct."
+            },
+            {
+                question: "Select the sentence with the correct comparative form:",
+                options: [
+                    "This book is more interesting than that one.",
+                    "This book is interestinger than that one.",
+                    "This book is more interesting as that one.",
+                    "This book is interesting than that one."
+                ],
+                answer: 0,
+                explanation: "For longer adjectives (more than one syllable), we form comparatives with 'more + adjective'. 'This book is more interesting than that one' is correct."
+            },
+            {
+                question: "Which sentence uses the modal verb correctly?",
+                options: [
+                    "You must to attend the meeting.",
+                    "You should to go home now.",
+                    "You might be right about this.",
+                    "You can to solve this problem."
+                ],
+                answer: 2,
+                explanation: "Modal verbs (can, could, may, might, must, should, etc.) are followed directly by the base form of the verb without 'to'. 'You might be right about this' is correct."
+            },
+            {
+                question: "Choose the sentence with the correct preposition:",
+                options: [
+                    "She's afraid from spiders.",
+                    "She's afraid of spiders.",
+                    "She's afraid at spiders.",
+                    "She's afraid on spiders."
+                ],
+                answer: 1,
+                explanation: "The correct preposition to use with 'afraid' is 'of'. 'She's afraid of spiders' is correct."
+            },
+            {
+                question: "Which sentence uses reported speech correctly?",
+                options: [
+                    "He said that he is coming tomorrow.",
+                    "He said that he was coming the next day.",
+                    "He said that he will come tomorrow.",
+                    "He said that he comes the next day."
+                ],
+                answer: 1,
+                explanation: "In reported speech, tenses usually shift back (present → past, 'tomorrow' → 'the next day'). 'He said that he was coming the next day' correctly shifts 'I am coming tomorrow'."
+            },
+            {
+                question: "Select the sentence with the correct relative clause:",
+                options: [
+                    "The man which lives next door is a doctor.",
+                    "The man who lives next door is a doctor.",
+                    "The man whose lives next door is a doctor.",
+                    "The man whom lives next door is a doctor."
+                ],
+                answer: 1,
+                explanation: "For people as the subject of a relative clause, we use 'who'. 'The man who lives next door is a doctor' is correct."
+            },
+            {
+                question: "Which sentence uses the present perfect continuous correctly?",
+                options: [
+                    "I have been working here since three years.",
+                    "I have been working here for three years.",
+                    "I have working here for three years.",
+                    "I am working here since three years."
+                ],
+                answer: 1,
+                explanation: "The present perfect continuous with a duration uses 'for'. 'I have been working here for three years' is correct. We use 'since' with a specific point in time."
+            },
+            {
+                question: "Choose the sentence with the correct subject-verb agreement:",
+                options: [
+                    "The team are playing well.",
+                    "The team is playing well.",
+                    "The team am playing well.",
+                    "The team be playing well."
+                ],
+                answer: 1,
+                explanation: "In American English, collective nouns like 'team' are usually treated as singular. 'The team is playing well' shows correct subject-verb agreement."
+            },
+            {
+                question: "Which sentence uses the future continuous tense correctly?",
+                options: [
+                    "This time tomorrow, I will flying to Paris.",
+                    "This time tomorrow, I will be fly to Paris.",
+                    "This time tomorrow, I will be flying to Paris.",
+                    "This time tomorrow, I flying to Paris."
+                ],
+                answer: 2,
+                explanation: "The future continuous is formed with 'will be + present participle (-ing form)'. 'This time tomorrow, I will be flying to Paris' is correct."
+            },
+            {
+                question: "Select the sentence with the correct use of gerund:",
+                options: [
+                    "I enjoy to swim in the ocean.",
+                    "I enjoy swimming in the ocean.",
+                    "I enjoy swim in the ocean.",
+                    "I enjoying swim in the ocean."
+                ],
+                answer: 1,
+                explanation: "After the verb 'enjoy', we use a gerund (verb + -ing). 'I enjoy swimming in the ocean' is correct."
+            },
+            {
+                question: "Which sentence uses the past perfect tense correctly?",
+                options: [
+                    "I had finished my homework before dinner.",
+                    "I have finished my homework before dinner.",
+                    "I was finished my homework before dinner.",
+                    "I had finish my homework before dinner."
+                ],
+                answer: 0,
+                explanation: "The past perfect tense is formed with 'had + past participle' and is used for actions completed before another past action. 'I had finished my homework before dinner' is correct."
+            },
+            {
+                question: "Choose the sentence with the correct use of quantifiers:",
+                options: [
+                    "There are a few students in the class, so we can't start.",
+                    "There are few students in the class, so we can't start.",
+                    "There are little students in the class, so we can't start.",
+                    "There are a little students in the class, so we can't start."
+                ],
+                answer: 1,
+                explanation: "'Few' (without 'a') means 'almost none' and has a negative meaning. For countable nouns like 'students', we use 'few/a few'. 'There are few students in the class, so we can't start' is correct."
+            },
+            {
+                question: "Which sentence uses the third conditional correctly?",
+                options: [
+                    "If I had studied harder, I would pass the exam.",
+                    "If I had studied harder, I would have passed the exam.",
+                    "If I would have studied harder, I would have passed the exam.",
+                    "If I studied harder, I would have passed the exam."
+                ],
+                answer: 1,
+                explanation: "The third conditional (for impossible past situations) uses 'if + past perfect, would have + past participle'. 'If I had studied harder, I would have passed the exam' is correct."
+            },
+            {
+                question: "Select the sentence with the correct use of articles:",
+                options: [
+                    "I need an umbrella because it's raining.",
+                    "I need a umbrella because it's raining.",
+                    "I need the umbrella because it's raining.",
+                    "I need umbrella because it's raining."
+                ],
+                answer: 0,
+                explanation: "Before words beginning with a vowel sound, we use 'an'. 'I need an umbrella because it's raining' is correct."
+            }
+        ];
+
+        // Variables
+        let currentQuestion = 0;
+        let score = 0;
+        let answers = Array(quizData.length).fill(null);
+        let studentName = "";
+        let timers = [];
+        let currentTimer;
+        const questionTime = 5 * 60; // 5 minutes in seconds
+
+        // DOM Elements
+        const loginScreen = document.getElementById('login-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultsScreen = document.getElementById('results-screen');
+        const loginForm = document.getElementById('login-form');
+        const studentNameInput = document.getElementById('student-name');
+        const studentInfo = document.getElementById('student-info');
+        const questionContainer = document.getElementById('question-container');
+        const currentQuestionEl = document.getElementById('current-question');
+        const totalQuestionsEl = document.getElementById('total-questions');
+        const timerEl = document.getElementById('timer');
+        const timeProgress = document.getElementById('time-progress');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const questionNav = document.getElementById('question-nav');
+        const scoreEl = document.getElementById('score');
+        const totalScoreEl = document.getElementById('total-score');
+        const percentageEl = document.getElementById('percentage');
+        const scoreBar = document.getElementById('score-bar');
+        const correctAnswersEl = document.getElementById('correct-answers');
+        const wrongAnswersEl = document.getElementById('wrong-answers');
+        const answersContainer = document.getElementById('answers-container');
+        const restartBtn = document.getElementById('restart-btn');
+
+        // Initialize the quiz
+        function initQuiz() {
+            // Set total questions
+            totalQuestionsEl.textContent = quizData.length;
+            
+            // Create question navigation
+            createQuestionNav();
+            
+            // Initialize timers for each question
+            for (let i = 0; i < quizData.length; i++) {
+                timers[i] = questionTime;
+            }
+            
+            // Load first question
+            loadQuestion(0);
+            
+            // Start timer for first question
+            startTimer();
+        }
+
+        // Create question navigation
+        function createQuestionNav() {
+            questionNav.innerHTML = '';
+            for (let i = 0; i < quizData.length; i++) {
+                const navItem = document.createElement('div');
+                navItem.className = `question-nav-item ${i === currentQuestion ? 'active' : ''} ${answers[i] !== null ? 'answered' : ''}`;
+                navItem.textContent = i + 1;
+                navItem.addEventListener('click', () => {
+                    if (currentQuestion !== i) {
+                        clearInterval(currentTimer);
+                        loadQuestion(i);
+                        startTimer();
+                    }
+                });
+                questionNav.appendChild(navItem);
+            }
+        }
+
+        // Load question
+        function loadQuestion(index) {
+            currentQuestion = index;
+            const question = quizData[index];
+            
+            // Update current question number
+            currentQuestionEl.textContent = index + 1;
+            
+            // Update navigation buttons
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = answers[index] === null;
+            
+            // Update question navigation
+            const navItems = questionNav.querySelectorAll('.question-nav-item');
+            navItems.forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            
+            // Create question content
+            questionContainer.innerHTML = `
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">ข้อที่ ${index + 1}: ${question.question}</h3>
+                    <div class="space-y-3">
+                        ${question.options.map((option, i) => `
+                            <label class="option-label flex items-center p-3 rounded-lg cursor-pointer ${answers[index] === i ? 'selected' : ''}">
+                                <input type="radio" name="question${index}" value="${i}" class="h-5 w-5 text-orange-600 mr-3" ${answers[index] === i ? 'checked' : ''}>
+                                <span>${option}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            // Add event listeners to options
+            const options = questionContainer.querySelectorAll('input[type="radio"]');
+            options.forEach((option, i) => {
+                option.addEventListener('change', () => {
+                    answers[index] = i;
+                    nextBtn.disabled = false;
+                    
+                    // Update option labels
+                    const labels = questionContainer.querySelectorAll('.option-label');
+                    labels.forEach((label, j) => {
+                        label.classList.toggle('selected', i === j);
+                    });
+                    
+                    // Update question navigation
+                    const navItems = questionNav.querySelectorAll('.question-nav-item');
+                    navItems[index].classList.add('answered');
+                });
+            });
+        }
+
+        // Start timer for current question
+        function startTimer() {
+            updateTimerDisplay();
+            
+            currentTimer = setInterval(() => {
+                timers[currentQuestion]--;
+                
+                if (timers[currentQuestion] <= 0) {
+                    clearInterval(currentTimer);
+                    
+                    // If no answer selected, select the first option
+                    if (answers[currentQuestion] === null) {
+                        answers[currentQuestion] = 0;
+                        
+                        // Update UI to show selected option
+                        const options = questionContainer.querySelectorAll('input[type="radio"]');
+                        options[0].checked = true;
+                        
+                        const labels = questionContainer.querySelectorAll('.option-label');
+                        labels[0].classList.add('selected');
+                        
+                        // Update question navigation
+                        const navItems = questionNav.querySelectorAll('.question-nav-item');
+                        navItems[currentQuestion].classList.add('answered');
+                        
+                        nextBtn.disabled = false;
+                    }
+                    
+                    // Move to next question if not the last one
+                    if (currentQuestion < quizData.length - 1) {
+                        loadQuestion(currentQuestion + 1);
+                        startTimer();
+                    } else {
+                        showResults();
+                    }
+                } else {
+                    updateTimerDisplay();
+                }
+            }, 1000);
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timers[currentQuestion] / 60);
+            const seconds = timers[currentQuestion] % 60;
+            timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Update progress bar
+            const progressPercentage = (timers[currentQuestion] / questionTime) * 100;
+            timeProgress.style.width = `${progressPercentage}%`;
+        }
+
+        // Show results
+        function showResults() {
+            clearInterval(currentTimer);
+            
+            // Calculate score
+            score = 0;
+            for (let i = 0; i < quizData.length; i++) {
+                if (answers[i] === quizData[i].answer) {
+                    score++;
+                }
+            }
+            
+            // Update results screen
+            scoreEl.textContent = score;
+            totalScoreEl.textContent = quizData.length;
+            const percentage = Math.round((score / quizData.length) * 100);
+            percentageEl.textContent = percentage;
+            scoreBar.style.width = `${percentage}%`;
+            correctAnswersEl.textContent = score;
+            wrongAnswersEl.textContent = quizData.length - score;
+            
+            // Create answers review
+            answersContainer.innerHTML = '';
+            for (let i = 0; i < quizData.length; i++) {
+                const question = quizData[i];
+                const isCorrect = answers[i] === question.answer;
+                
+                const answerItem = document.createElement('div');
+                answerItem.className = `p-4 rounded-lg ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`;
+                answerItem.innerHTML = `
+                    <div class="flex items-start mb-2">
+                        <div class="flex-shrink-0 mt-1">
+                            ${isCorrect ? 
+                                '<svg class="h-5 w-5 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>' : 
+                                '<svg class="h-5 w-5 text-red-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>'
+                            }
+                        </div>
+                        <div class="ml-3">
+                            <h4 class="font-bold text-gray-800">ข้อที่ ${i + 1}: ${question.question}</h4>
+                            <p class="text-sm ${isCorrect ? 'text-green-600' : 'text-red-600'}">
+                                ${isCorrect ? 'คุณตอบถูก!' : 'คุณตอบผิด'}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="ml-8">
+                        <p class="mb-2">
+                            <span class="font-medium">คำตอบของคุณ:</span> 
+                            <span class="${isCorrect ? 'text-green-600' : 'text-red-600'}">${question.options[answers[i]]}</span>
+                        </p>
+                        ${!isCorrect ? `
+                            <p class="mb-2">
+                                <span class="font-medium">คำตอบที่ถูกต้อง:</span> 
+                                <span class="text-green-600">${question.options[question.answer]}</span>
+                            </p>
+                        ` : ''}
+                        <p class="text-gray-700 text-sm mt-2 bg-white p-3 rounded border">
+                            <span class="font-medium">คำอธิบาย:</span> ${question.explanation}
+                        </p>
+                    </div>
+                `;
+                answersContainer.appendChild(answerItem);
+            }
+            
+            // Show results screen
+            quizScreen.classList.add('hidden');
+            resultsScreen.classList.remove('hidden');
+        }
+
+        // Event Listeners
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            studentName = studentNameInput.value.trim();
+            
+            if (studentName) {
+                studentInfo.textContent = `ผู้ทำแบบทดสอบ: ${studentName}`;
+                loginScreen.classList.add('hidden');
+                quizScreen.classList.remove('hidden');
+                initQuiz();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                clearInterval(currentTimer);
+                loadQuestion(currentQuestion - 1);
+                startTimer();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            clearInterval(currentTimer);
+            
+            if (currentQuestion < quizData.length - 1) {
+                loadQuestion(currentQuestion + 1);
+                startTimer();
+            } else {
+                // Check if all questions are answered
+                const allAnswered = answers.every(answer => answer !== null);
+                
+                if (allAnswered) {
+                    showResults();
+                }
+            }
+        });
+
+        restartBtn.addEventListener('click', () => {
+            // Reset quiz state
+            currentQuestion = 0;
+            score = 0;
+            answers = Array(quizData.length).fill(null);
+            timers = Array(quizData.length).fill(questionTime);
+            
+            // Reset UI
+            resultsScreen.classList.add('hidden');
+            loginScreen.classList.remove('hidden');
+            studentNameInput.value = '';
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93adecc202952721',t:'MTc0NjQyMzg1NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
